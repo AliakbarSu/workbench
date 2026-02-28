@@ -2,6 +2,13 @@
 set -euo pipefail  # Exit on error, undefined vars, and pipeline failures
 IFS=$'\n\t'       # Stricter word splitting
 
+FIREWALL_CONFIG="${FIREWALL_CONFIG:-$(dirname "$0")/firewall-config.yaml}"
+
+if [ ! -f "$FIREWALL_CONFIG" ]; then
+    echo "ERROR: Firewall config not found at $FIREWALL_CONFIG"
+    exit 1
+fi
+
 # 1. Extract Docker DNS info BEFORE any flushing
 DOCKER_DNS_RULES=$(iptables-save -t nat | grep "127\.0\.0\.11" || true)
 
@@ -64,16 +71,7 @@ while read -r cidr; do
 done < <(echo "$gh_ranges" | jq -r '(.web + .api + .git)[]' | aggregate -q)
 
 # Resolve and add other allowed domains
-for domain in \
-    "registry.npmjs.org" \
-    "api.anthropic.com" \
-    "sentry.io" \
-    "statsig.anthropic.com" \
-    "statsig.com" \
-    "https://raw.githubusercontent.com" \
-    "marketplace.visualstudio.com" \
-    "vscode.blob.core.windows.net" \
-    "update.code.visualstudio.com"; do
+while IFS= read -r domain; do
     echo "Resolving $domain..."
     ips=$(dig +noall +answer A "$domain" | awk '$4 == "A" {print $5}')
     if [ -z "$ips" ]; then
@@ -89,7 +87,7 @@ for domain in \
         echo "Adding $ip for $domain"
         ipset add allowed-domains "$ip"
     done < <(echo "$ips")
-done
+done < <(yq '.allowed_domains[]' "$FIREWALL_CONFIG")
 
 # Get host IP from default route
 HOST_IP=$(ip route | grep default | cut -d" " -f3)
