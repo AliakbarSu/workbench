@@ -8,3 +8,10 @@ allowed_domains:
   - marketplace.visualstudio.com
   - vscode.blob.core.windows.net
   - update.code.visualstudio.com
+  - https://ui.shadcn.com/
+  - https://tanstack.com/
+  - https://medium.com/
+  - https://www.google.com/
+  - https://stackoverflow.com/questions
+  - https://react.dev/
+  - https://tailwindcss.com/
