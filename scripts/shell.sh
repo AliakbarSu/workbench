@@ -32,4 +32,6 @@ else
     "$DOCKER_IMAGE" sleep infinity
 fi
 
+docker cp "${SCRIPT_DIR}/../claude-user-setting/." "$DOCKER_CONTAINER_NAME:/home/node/.claude/"
+
 docker exec -it -w "/projects" "$DOCKER_CONTAINER_NAME" /bin/zsh
