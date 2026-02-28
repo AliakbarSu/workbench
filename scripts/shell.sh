@@ -6,7 +6,7 @@ SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 DOCKER_CONTAINER_NAME="workbench"
 DOCKER_IMAGE="workbench"
 DOCKERFILE="${SCRIPT_DIR}/../Dockerfile"
-MOUNTS_FILE="${SCRIPT_DIR}/../mounts.yaml"
+MOUNTS_FILE="${SCRIPT_DIR}/../config/mounts.yaml"
 
 if ! docker image inspect "$DOCKER_IMAGE" >/dev/null 2>&1; then
   echo "Image '${DOCKER_IMAGE}' not found, building..."

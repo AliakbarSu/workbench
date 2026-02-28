@@ -2,7 +2,7 @@
 set -euo pipefail  # Exit on error, undefined vars, and pipeline failures
 IFS=$'\n\t'       # Stricter word splitting
 
-FIREWALL_CONFIG="${FIREWALL_CONFIG:-$(dirname "$0")/firewall-config.yaml}"
+FIREWALL_CONFIG="${FIREWALL_CONFIG:-/usr/local/etc/workbench/firewall.yaml}"
 
 if [ ! -f "$FIREWALL_CONFIG" ]; then
     echo "ERROR: Firewall config not found at $FIREWALL_CONFIG"
