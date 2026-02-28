@@ -62,8 +62,13 @@ RUN SNIPPET="export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhisto
 ENV DEVCONTAINER=true
 
 # Create workspace and config directories and set permissions
-RUN mkdir -p /workspace /home/node/.claude && \
-  chown -R node:node /workspace /home/node/.claude
+RUN mkdir -p /workspace /home/node/.claude /home/node/.ssh && \
+  chown -R node:node /workspace /home/node/.claude /home/node/.ssh
+
+# Pre-trust GitHub's host key
+RUN ssh-keyscan github.com >> /home/node/.ssh/known_hosts && \
+  chown node:node /home/node/.ssh/known_hosts && \
+  chmod 600 /home/node/.ssh/known_hosts
 
 WORKDIR /workspace
 

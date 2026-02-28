@@ -31,7 +31,7 @@ A containerised development environment for running [Claude Code](https://github
 make shell
 ```
 
-This builds the Docker image if it doesn't exist, starts the container (or attaches to an existing one), and drops you into a zsh session. Your projects are mounted under `/projects/<directory-name>`.
+This builds the Docker image if it doesn't exist, starts the container (or attaches to an existing one), and drops you into a zsh session. Each path from `mounts.yaml` is mounted at the same absolute path inside the container (e.g. `/Users/you/repos/my-project` → `/Users/you/repos/my-project`), which keeps git worktree references working correctly.
 
 ## Configuration
 
