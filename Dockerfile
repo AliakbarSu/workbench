@@ -92,6 +92,9 @@ RUN curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg \
     && apt-get install -y --no-install-recommends google-cloud-cli \
     && rm -rf /var/lib/apt/lists/*
 
+# Create linuxbrew home dir so non-root install succeeds
+RUN mkdir -p /home/linuxbrew && chown -R node:node /home/linuxbrew
+
 # Set up non-root user
 USER node
 

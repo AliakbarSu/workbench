@@ -18,7 +18,7 @@ mount_args=()
 while IFS= read -r path; do
   name=$(basename "$path")
   mount_args+=(-v "${path}:/projects/${name}")
-done < <(grep -E '^\s*-\s+' "$MOUNTS_FILE" | sed 's/^\s*-\s*//')
+done < <(grep -E '^\s*-\s+' "$MOUNTS_FILE" | sed 's/^[[:space:]]*-[[:space:]]*//')
 
 if docker ps -q -f "name=^${DOCKER_CONTAINER_NAME}$" | grep -q .; then
   echo "Attaching to running container..."
